@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScamShield AI — Multilingual Scam & Phishing Detector</title>
+  <meta name="description" content="AI-Powered Multilingual Phishing and Scam Message Detector for English, Tamil, and Tanglish. Think Before You Click.">
+  <meta name="theme-color" content="#060913">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="cyber-theme">
+  <!-- Scanline / Background Grid Overlay -->
+  <div class="cyber-bg-overlay" aria-hidden="true"></div>
+  <div class="cyber-grid" aria-hidden="true"></div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <div class="app-layout">
+    <!-- Top Mobile Header & Brand Banner -->
+    <header class="app-header">
+      <div class="header-left">
+        <button id="mobile-nav-toggle" class="btn-icon-nav" aria-label="Toggle navigation menu" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <div class="brand-badge-group">
+          <div class="shield-logo" aria-label="ScamShield Logo">
+            <svg viewBox="0 0 36 36" width="34" height="34" fill="none">
+              <path d="M18 2L5 7.5V17C5 25.5 10.6 32.8 18 35C25.4 32.8 31 25.5 31 17V7.5L18 2Z" fill="url(#shield-grad)" stroke="#00f5ff" stroke-width="2"/>
+              <path d="M11 17.5L15.5 22L25 12.5" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+              <defs>
+                <linearGradient id="shield-grad" x1="5" y1="2" x2="31" y2="35" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#0e244d"/>
+                  <stop offset="0.6" stop-color="#0a122c"/>
+                  <stop offset="1" stop-color="#8b5cf6"/>
+                </linearGradient>
+              </defs>
+            </svg>
+          </div>
+          <div class="brand-titles">
+            <h1 class="brand-name">ScamShield <span class="cyan-text">AI</span></h1>
+            <p class="brand-tagline">Think Before You Click</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-right">
+        <div class="status-indicator-pill" title="Heuristic engine status">
+          <span class="status-dot pulsing"></span>
+          <span class="status-text">SHIELD ENGINE ACTIVE</span>
+        </div>
+        <div class="hackathon-badge">
+          <span>HACKATHON EDITION</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside id="app-sidebar" class="app-sidebar">
+      <div class="sidebar-brand-box">
+        <div class="shield-logo-sm">
+          <svg viewBox="0 0 36 36" width="28" height="28" fill="none">
+            <path d="M18 2L5 7.5V17C5 25.5 10.6 32.8 18 35C25.4 32.8 31 25.5 31 17V7.5L18 2Z" fill="url(#shield-grad-sm)" stroke="#00f5ff" stroke-width="1.8"/>
+            <path d="M11 17.5L15.5 22L25 12.5" stroke="#00f5ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="shield-grad-sm" x1="5" y1="2" x2="31" y2="35" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0b1739"/>
+                <stop offset="1" stop-color="#1e1b4b"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="sidebar-title">COMMAND CENTER</span>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li class="nav-item">
+            <a href="#dashboard" class="nav-link active" data-section="dashboard">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+              <span>Dashboard</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#analyze" class="nav-link" data-section="analyze">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                <line x1="9" y1="10" x2="15" y2="10"></line>
+                <line x1="12" y1="7" x2="12" y2="13"></line>
+              </svg>
+              <span>Analyze Message</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#url-scanner" class="nav-link" data-section="url-scanner">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+              </svg>
+              <span>URL Scanner</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#voice" class="nav-link" data-section="voice">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                <line x1="12" y1="19" x2="12" y2="23"></line>
+                <line x1="8" y1="23" x2="16" y2="23"></line>
+              </svg>
+              <span>Voice Analysis</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#awareness" class="nav-link" data-section="awareness">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              <span>Scam Awareness</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#trends" class="nav-link" data-section="trends">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Scam Trends</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="#history" class="nav-link" data-section="history">
+              <svg class="nav-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              <span>Analysis History</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar Security Badge Footer -->
+      <div class="sidebar-footer">
+        <div class="security-chip">
+          <div class="chip-glow"></div>
+          <span class="chip-label">LANG SUPPORT</span>
+          <div class="chip-langs">
+            <span class="lang-tag">English</span>
+            <span class="lang-tag">தமிழ்</span>
+            <span class="lang-tag">Tanglish</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Mobile Nav Overlay Backdrop -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop" aria-hidden="true"></div>
+
+    <!-- Main Content Stage -->
+    <main class="app-main" id="main-content">
+
+      <!-- ======================================================== -->
+      <!-- SECTION 1: DASHBOARD -->
+      <!-- ======================================================== -->
+      <section id="section-dashboard" class="content-section active">
+        <div class="section-hero">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>Cyber Threat Intelligence System</span>
+            </div>
+            <h2 class="hero-title">Protecting Citizens from Digital Scams</h2>
+            <p class="hero-subtitle">
+              Instant detection for fraudulent SMS, WhatsApp threats, UPI scams, and deceptive links in <strong>English</strong>, <strong>தமிழ் (Tamil)</strong>, and <strong>Tanglish</strong>.
+            </p>
+            <div class="hero-actions">
+              <button class="btn btn-primary btn-glow" onclick="App.navigateTo('analyze')">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>
+                <span>Analyze a Message</span>
+              </button>
+              <button class="btn btn-secondary" onclick="App.navigateTo('url-scanner')">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                </svg>
+                <span>Scan a Link</span>
+              </button>
+            </div>
+          </div>
+          <div class="hero-shield-graphic" aria-hidden="true">
+            <div class="radar-circle circle-1"></div>
+            <div class="radar-circle circle-2"></div>
+            <div class="radar-circle circle-3"></div>
+            <div class="shield-hologram">
+              <svg viewBox="0 0 100 120" width="110" height="130" fill="none">
+                <path d="M50 8L15 24V56C15 84 30 108 50 115C70 108 85 84 85 56V24L50 8Z" fill="url(#hero-shield-grad)" stroke="#00f5ff" stroke-width="3"/>
+                <path d="M33 58L45 70L68 44" stroke="#00f5ff" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="hero-shield-grad" x1="15" y1="8" x2="85" y2="115" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#091834" stop-opacity="0.9"/>
+                    <stop offset="1" stop-color="#3b1d79" stop-opacity="0.7"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Live Metrics Cards -->
+        <div class="metrics-grid">
+          <div class="metric-card metric-total">
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Total Analyzed</span>
+              <span class="metric-value" id="dash-stat-total">0</span>
+              <span class="metric-subtext">Session + Local Storage</span>
+            </div>
+          </div>
+
+          <div class="metric-card metric-low">
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Low Risk (Safe)</span>
+              <span class="metric-value text-safe" id="dash-stat-low">0</span>
+              <span class="metric-subtext">Score 0 - 30</span>
+            </div>
+          </div>
+
+          <div class="metric-card metric-med">
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">Medium Risk (Warning)</span>
+              <span class="metric-value text-warn" id="dash-stat-med">0</span>
+              <span class="metric-subtext">Score 31 - 60</span>
+            </div>
+          </div>
+
+          <div class="metric-card metric-high">
+            <div class="metric-icon">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="15" y1="9" x2="9" y2="15"></line>
+                <line x1="9" y1="9" x2="15" y2="15"></line>
+              </svg>
+            </div>
+            <div class="metric-info">
+              <span class="metric-label">High Risk (Scams)</span>
+              <span class="metric-value text-danger" id="dash-stat-high">0</span>
+              <span class="metric-subtext">Score 61 - 100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Daily Cybersecurity Safety Tip Card -->
+        <div class="safety-tip-card">
+          <div class="tip-badge-row">
+            <div class="tip-tag">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="16" x2="12" y2="12"></line>
+                <line x1="12" y1="8" x2="12.01" y2="8"></line>
+              </svg>
+              <span>DAILY CYBER SAFETY TIP / இன்றைய பாதுகாப்பு அறிவுரை</span>
+            </div>
+            <button class="btn-ghost-sm" id="btn-next-tip" title="Load next safety tip">
+              <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="23 4 23 10 17 10"></polyline>
+                <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+              </svg>
+              <span>Next Tip</span>
+            </button>
+          </div>
+          <div class="tip-content" id="daily-tip-text">
+            <p class="tip-en"><strong>Never share your OTP with anyone:</strong> Bank officials, police, and customer support representatives will NEVER ask for your One-Time Password or UPI PIN.</p>
+            <p class="tip-ta"><strong>உங்கள் OTP-ஐ யாரிடமும் பகிராதீர்கள்:</strong> வங்கி அதிகாரிகள் அல்லது வாடிக்கையாளர் சேவை மையத்தினர் ஒருபோதும் உங்கள் OTP அல்லது UPI பின்னை கேட்க மாட்டார்கள்.</p>
+          </div>
+        </div>
+
+        <!-- Quick Access Feature Cards -->
+        <div class="features-section">
+          <h3 class="section-subheading">Defense Capabilities</h3>
+          <div class="feature-cards-grid">
+            <div class="feature-card" onclick="App.navigateTo('analyze')">
+              <div class="feature-icon cyan-glow">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                  <polyline points="22,6 12,13 2,6"></polyline>
+                </svg>
+              </div>
+              <h4 class="feature-title">Multilingual SMS Analyzer</h4>
+              <p class="feature-desc">Detect fraud keywords, banking threats, and urgent OTP traps in English, Tamil, and Tanglish text.</p>
+              <span class="feature-link">Open Analyzer &rarr;</span>
+            </div>
+
+            <div class="feature-card" onclick="App.navigateTo('url-scanner')">
+              <div class="feature-icon violet-glow">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+                </svg>
+              </div>
+              <h4 class="feature-title">URL Threat Scanner</h4>
+              <p class="feature-desc">Unmask deceptive shorteners, lookalike banking domains, unencrypted HTTP links, and suspicious IPs.</p>
+              <span class="feature-link">Scan Links &rarr;</span>
+            </div>
+
+            <div class="feature-card" onclick="App.navigateTo('voice')">
+              <div class="feature-icon blue-glow">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                </svg>
+              </div>
+              <h4 class="feature-title">Voice Scam Detection</h4>
+              <p class="feature-desc">Speak or transcribe fraudulent call scripts in Tamil or English to catch extortion threats.</p>
+              <span class="feature-link">Analyze Voice &rarr;</span>
+            </div>
+
+            <div class="feature-card" onclick="App.navigateTo('awareness')">
+              <div class="feature-icon amber-glow">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                  <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                </svg>
+              </div>
+              <h4 class="feature-title">Awareness & Quiz</h4>
+              <p class="feature-desc">Learn scam patterns with bilingual guides and test your defense readiness with the 5-question quiz.</p>
+              <span class="feature-link">Take Quiz &rarr;</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Analysis Activity Preview (Honest Empty State or Records) -->
+        <div class="dashboard-recent-section">
+          <div class="recent-header-row">
+            <h3 class="section-subheading">Recent Analysis History</h3>
+            <button class="btn-ghost-sm" onclick="App.navigateTo('history')">View Full History &rarr;</button>
+          </div>
+          <div id="dash-recent-list" class="recent-scans-container">
+            <!-- Dynamically populated or empty state -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 2: MULTILINGUAL MESSAGE ANALYZER -->
+      <!-- ======================================================== -->
+      <section id="section-analyze" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Multilingual Message Analyzer</h2>
+          <p class="section-description">
+            Heuristic threat assessment engine for SMS, WhatsApp, and Telegram messages written in English, Tamil, and Tanglish.
+          </p>
+        </div>
+
+        <div class="analyzer-card">
+          <!-- Language Selector & Controls Bar -->
+          <div class="analyzer-toolbar">
+            <div class="lang-selector-group">
+              <label for="analyzer-lang-select" class="field-label">Language Mode:</label>
+              <div class="select-wrapper">
+                <select id="analyzer-lang-select" class="cyber-select">
+                  <option value="auto">Auto Detect (English / Tamil / Tanglish)</option>
+                  <option value="en">English</option>
+                  <option value="ta">Tamil (தமிழ்)</option>
+                  <option value="tanglish">Tanglish (Tamil in English)</option>
+                </select>
+              </div>
+            </div>
+            <div class="char-counter-wrap">
+              <span id="char-counter">0</span> / 1000 characters
+            </div>
+          </div>
+
+          <!-- Message Text Area Input -->
+          <div class="input-container">
+            <textarea 
+              id="message-input" 
+              class="cyber-textarea" 
+              placeholder="Paste or type suspicious message here... e.g. Your bank account will be blocked today. Click this link and enter your OTP immediately."
+              maxlength="1000"
+              rows="6"
+              aria-label="Suspicious message input"
+            ></textarea>
+            <div id="input-validation-msg" class="validation-msg hidden"></div>
+          </div>
+
+          <!-- Preset Example Messages Buttons -->
+          <div class="presets-container">
+            <span class="preset-label">Load Test Example:</span>
+            <div class="preset-buttons-wrap">
+              <button class="btn-preset" data-example="en_bank">
+                <span class="badge-lang">EN</span>
+                <span>Bank OTP Threat</span>
+              </button>
+              <button class="btn-preset" data-example="ta_bank">
+                <span class="badge-lang">தமிழ்</span>
+                <span>வங்கி முடக்கம்</span>
+              </button>
+              <button class="btn-preset" data-example="tanglish_bank">
+                <span class="badge-lang">Tanglish</span>
+                <span>Bank Block Trap</span>
+              </button>
+              <button class="btn-preset" data-example="upi_cashback">
+                <span class="badge-lang">UPI</span>
+                <span>GPay QR Reward</span>
+              </button>
+              <button class="btn-preset" data-example="job_scam">
+                <span class="badge-lang">Job</span>
+                <span>Telegram Fee Trap</span>
+              </button>
+              <button class="btn-preset" data-example="safe_msg">
+                <span class="badge-lang safe">Safe</span>
+                <span>Normal Message</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Actions Row -->
+          <div class="analyzer-actions-row">
+            <button id="btn-clear-msg" class="btn btn-secondary">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+              <span>Clear</span>
+            </button>
+            <button id="btn-analyze-msg" class="btn btn-primary btn-glow">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Analyze Message</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Scanning Animation Box -->
+        <div id="scanning-progress" class="scanning-progress-box hidden" aria-live="polite">
+          <div class="scanner-cyber-beam"></div>
+          <div class="scanner-status">
+            <span class="scanner-spinner"></span>
+            <span id="scanner-status-text">Tokenizing multilingual text patterns...</span>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- ANALYSIS RESULTS PANEL -->
+        <!-- ======================================================== -->
+        <div id="analysis-results-panel" class="results-panel hidden" aria-live="polite">
+          <!-- Top Results Summary Card -->
+          <div class="result-summary-card" id="result-summary-card">
+            <div class="gauge-container">
+              <!-- Radial Meter SVG -->
+              <div class="circular-meter">
+                <svg viewBox="0 0 160 160" width="150" height="150" class="meter-svg">
+                  <circle cx="80" cy="80" r="66" class="meter-bg"></circle>
+                  <circle cx="80" cy="80" r="66" class="meter-progress" id="risk-meter-fill"></circle>
+                </svg>
+                <div class="meter-center">
+                  <span class="meter-score-num" id="result-score-num">0</span>
+                  <span class="meter-score-max">/ 100</span>
+                  <span class="meter-score-label">RISK SCORE</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-headline-info">
+              <div class="result-badges-row">
+                <span class="risk-badge" id="result-risk-badge">LOW RISK</span>
+                <span class="category-badge" id="result-category-badge">Unknown / Unclear</span>
+                <span class="lang-detected-badge" id="result-lang-badge">Auto Detected</span>
+              </div>
+              <h3 class="result-verdict-title" id="result-verdict-title">Analysis Complete</h3>
+              <p class="result-verdict-desc" id="result-verdict-desc">
+                No major warning signs detected. This does not guarantee that the message is safe.
+              </p>
+              <div class="result-meta-tags">
+                <span class="meta-tag" id="result-warning-count">0 warning signs</span>
+                <span class="meta-tag">Rule Engine v2.4</span>
+                <span class="meta-tag">Client Heuristic Evaluation</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Highlighted Original Message Card -->
+          <div class="result-detail-card">
+            <div class="card-header-flex">
+              <h4 class="card-title">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M12 20h9"></path>
+                  <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                </svg>
+                <span>Suspicious Phrase Highlighting</span>
+              </h4>
+              <span class="legend-note">High-risk trigger phrases are highlighted below</span>
+            </div>
+            <!-- Safely generated DOM content with no unescaped raw user HTML -->
+            <div class="highlighted-message-box" id="highlighted-message-display">
+              <!-- Rendered safely via text nodes and mark elements -->
+            </div>
+          </div>
+
+          <!-- Detected Warning Signs & Explanations -->
+          <div class="result-detail-card">
+            <h4 class="card-title">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+              <span>Detected Threat Vectors & Phrase Explanations</span>
+            </h4>
+            <div id="detected-phrases-list" class="threat-cards-list">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+
+          <!-- Tailored Safety Checklist -->
+          <div class="result-detail-card">
+            <div class="card-header-flex">
+              <h4 class="card-title">
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+                <span>Personalized Safety Recommendations</span>
+              </h4>
+              <button id="btn-copy-advice" class="btn-copy">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy Safety Advice</span>
+              </button>
+            </div>
+            <div id="safety-recommendations-list" class="safety-checklist">
+              <!-- Dynamic checklist -->
+            </div>
+            <div class="official-reporting-banner">
+              <span class="report-icon">🚨</span>
+              <div class="report-text">
+                <strong>Need to report a scam in India?</strong>
+                Dial the National Cybercrime Helpline <strong>1930</strong> or register an online complaint at 
+                <a href="https://cybercrime.gov.in" target="_blank" rel="noopener noreferrer" class="external-link">cybercrime.gov.in</a>.
+              </div>
+            </div>
+          </div>
+
+          <!-- Re-scan Button -->
+          <div class="results-footer-actions">
+            <button class="btn btn-secondary" onclick="App.resetAnalyzer()">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span>Analyze Another Message</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 3: URL SCANNER -->
+      <!-- ======================================================== -->
+      <section id="section-url-scanner" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">URL Threat Inspector</h2>
+          <p class="section-description">
+            Heuristic inspection of web links, shortened URLs, IP hosts, and misleading brand subdomains before you click.
+          </p>
+        </div>
+
+        <div class="analyzer-card">
+          <div class="url-input-group">
+            <div class="url-field-wrapper">
+              <span class="url-input-icon">
+                <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="2" y1="12" x2="22" y2="12"></line>
+                </svg>
+              </span>
+              <input 
+                type="text" 
+                id="url-input" 
+                class="cyber-input" 
+                placeholder="Paste URL here... e.g. http://192.168.1.50/sbi-netbanking-verify.html"
+                aria-label="URL to inspect"
+              >
+            </div>
+            <button id="btn-scan-url" class="btn btn-primary btn-glow">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Scan URL</span>
+            </button>
+          </div>
+          <div id="url-validation-msg" class="validation-msg hidden"></div>
+
+          <!-- URL Presets -->
+          <div class="presets-container">
+            <span class="preset-label">Test Harmless Examples:</span>
+            <div class="preset-buttons-wrap">
+              <button class="btn-preset" data-url-example="ip_host">
+                <span class="badge-lang danger">IP Host</span>
+                <span>http://192.168.1.50/sbi-verify.html</span>
+              </button>
+              <button class="btn-preset" data-url-example="shortener">
+                <span class="badge-lang warn">Shortener</span>
+                <span>http://bit.ly/claim-free-iphone-2026</span>
+              </button>
+              <button class="btn-preset" data-url-example="lookalike">
+                <span class="badge-lang danger">Spoofed TLD</span>
+                <span>https://sbi.netbanking-kyc.xyz/login</span>
+              </button>
+              <button class="btn-preset" data-url-example="safe">
+                <span class="badge-lang safe">Legit</span>
+                <span>https://www.onlinesbi.sbi</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="security-disclaimer-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span>
+              <strong>Safe Inspection Notice:</strong> Submitted URLs are parsed locally inside your browser. We never visit, ping, or execute code from external links. Valid HTTPS does not guarantee that a website is safe.
+            </span>
+          </div>
+        </div>
+
+        <!-- URL Results Box -->
+        <div id="url-results-panel" class="results-panel hidden" aria-live="polite">
+          <div class="result-summary-card">
+            <div class="gauge-container">
+              <div class="circular-meter">
+                <svg viewBox="0 0 160 160" width="150" height="150" class="meter-svg">
+                  <circle cx="80" cy="80" r="66" class="meter-bg"></circle>
+                  <circle cx="80" cy="80" r="66" class="meter-progress" id="url-risk-meter-fill"></circle>
+                </svg>
+                <div class="meter-center">
+                  <span class="meter-score-num" id="url-score-num">0</span>
+                  <span class="meter-score-max">/ 100</span>
+                  <span class="meter-score-label">URL RISK</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="result-headline-info">
+              <div class="result-badges-row">
+                <span class="risk-badge" id="url-risk-badge">LOW RISK</span>
+                <span class="category-badge" id="url-protocol-badge">HTTPS</span>
+              </div>
+              <h3 class="result-verdict-title" id="url-verdict-title">URL Inspection Complete</h3>
+              <p class="url-scanned-display" id="url-display-target">http://example.com</p>
+              <p class="result-verdict-desc" id="url-verdict-desc">Evaluation summary...</p>
+            </div>
+          </div>
+
+          <!-- URL Indicators Details -->
+          <div class="result-detail-card">
+            <h4 class="card-title">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+              </svg>
+              <span>Detected URL Indicators & Heuristics</span>
+            </h4>
+            <div id="url-indicators-list" class="threat-cards-list">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- URL Safety Recommendations -->
+          <div class="result-detail-card">
+            <h4 class="card-title">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>URL Safety Advice</span>
+            </h4>
+            <div id="url-advice-list" class="safety-checklist">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 4: VOICE ANALYSIS -->
+      <!-- ======================================================== -->
+      <section id="section-voice" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Voice Scam Detection</h2>
+          <p class="section-description">
+            Transcribe and scan fraudulent phone calls, voice notes, and voicemails using the Web Speech API or manual transcript input.
+          </p>
+        </div>
+
+        <div class="analyzer-card">
+          <!-- Speech API Status Support Banner -->
+          <div id="voice-support-banner" class="voice-support-banner">
+            <!-- Dynamic: Supported or Fallback notice -->
+          </div>
+
+          <!-- Voice Controls -->
+          <div class="voice-controls-panel">
+            <div class="voice-lang-select-row">
+              <label for="voice-lang-select" class="field-label">Speech Recognition Language:</label>
+              <div class="select-wrapper">
+                <select id="voice-lang-select" class="cyber-select">
+                  <option value="en-IN">English (India) [en-IN]</option>
+                  <option value="en-US">English (US) [en-US]</option>
+                  <option value="ta-IN">Tamil (தமிழ் - India) [ta-IN]</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Big Mic Pulse Button -->
+            <div class="mic-trigger-area">
+              <div class="mic-ring-pulse" id="mic-ring-pulse"></div>
+              <button id="btn-toggle-mic" class="btn-mic-record" aria-label="Start recording audio">
+                <svg id="mic-icon-svg" viewBox="0 0 24 24" width="34" height="34" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path>
+                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                  <line x1="12" y1="19" x2="12" y2="23"></line>
+                  <line x1="8" y1="23" x2="16" y2="23"></line>
+                </svg>
+              </button>
+              <span id="mic-status-label" class="mic-status-label">Click Microphone to Start Listening</span>
+            </div>
+          </div>
+
+          <!-- Transcript Input / Output Textarea -->
+          <div class="input-container">
+            <div class="input-label-row">
+              <label for="voice-transcript-input" class="field-label">Transcription / Voice Script:</label>
+              <span class="subtext-note">Review or manually edit transcribed text below</span>
+            </div>
+            <textarea 
+              id="voice-transcript-input" 
+              class="cyber-textarea" 
+              placeholder="Your live transcription will appear here... Or you can paste a recorded voice note transcript directly."
+              rows="5"
+            ></textarea>
+          </div>
+
+          <!-- Presets for Voice testing -->
+          <div class="presets-container">
+            <span class="preset-label">Test Voice Scripts:</span>
+            <div class="preset-buttons-wrap">
+              <button class="btn-preset" data-voice-preset="police_extortion">
+                <span class="badge-lang danger">EN</span>
+                <span>CBI Police Threat Call</span>
+              </button>
+              <button class="btn-preset" data-voice-preset="ta_electricity">
+                <span class="badge-lang danger">தமிழ்</span>
+                <span>மின்சாரம் துண்டிப்பு போலி அழைப்பு</span>
+              </button>
+              <button class="btn-preset" data-voice-preset="courier_customs">
+                <span class="badge-lang warn">Tanglish</span>
+                <span>Customs Courier Call</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="analyzer-actions-row">
+            <button id="btn-clear-voice" class="btn btn-secondary">
+              <span>Clear</span>
+            </button>
+            <button id="btn-analyze-voice" class="btn btn-primary btn-glow">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <span>Analyze Transcription</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice Results Container (Reuses detection presentation) -->
+        <div id="voice-results-panel" class="results-panel hidden" aria-live="polite">
+          <!-- Injected dynamically on voice analyze -->
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 5: SCAM AWARENESS LEARNING CENTER -->
+      <!-- ======================================================== -->
+      <section id="section-awareness" class="content-section">
+        <div class="section-title-wrap">
+          <h2 class="section-heading">Scam Awareness Learning Center</h2>
+          <p class="section-description">
+            Bilingual cybersecurity education and interactive scenario quiz to build real defense reflexes.
+          </p>
+        </div>
+
+        <!-- 8 Knowledge Base Guides Grid -->
+        <h3 class="section-subheading">Common Cyber Fraud Methods & How to Spot Them</h3>
+        <div class="awareness-grid">
+          <!-- Card 1 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap cyan">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+            </div>
+            <h4 class="awareness-title">1. Phishing & Smishing</h4>
+            <p class="awareness-en">Fraudulent text messages containing deceptive links designed to steal passwords, debit cards, or banking credentials.</p>
+            <p class="awareness-ta">ரகசிய கடவுச்சொல் மற்றும் வங்கி விவரங்களை திருட போலியான இணைப்புகளுடன் அனுப்பப்படும் மோசடி குறுஞ்செய்திகள்.</p>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap red">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <rect x="2" y="5" width="20" height="14" rx="2"></rect>
+                <line x1="2" y1="10" x2="22" y2="10"></line>
+              </svg>
+            </div>
+            <h4 class="awareness-title">2. Fake Bank & KYC Alerts</h4>
+            <p class="awareness-en">Threatening that your bank account or SIM will be deactivated today unless you immediately click a link and complete KYC.</p>
+            <p class="awareness-ta">உங்கள் வங்கி கணக்கு அல்லது சிம் கார்டு இன்று முடக்கப்படும் என பயமுறுத்தி KYC செய்ய வைக்கும் மோசடி.</p>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap amber">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <rect x="3" y="3" width="7" height="7"></rect>
+                <rect x="14" y="3" width="7" height="7"></rect>
+                <rect x="14" y="14" width="7" height="7"></rect>
+                <rect x="3" y="14" width="7" height="7"></rect>
+              </svg>
+            </div>
+            <h4 class="awareness-title">3. UPI QR Code & Refund Fraud</h4>
+            <p class="awareness-en">Scammers claim you must scan a QR code or enter your UPI PIN to "receive money" or claim a cashback. (Entering a PIN always sends money!)</p>
+            <p class="awareness-ta">பணம் பெற QR கோடை ஸ்கேன் செய்யவோ அல்லது UPI பின்னை உள்ளிடவோ தேவையில்லை. பின் போட்டால் பணம் பறிபோகும்!</p>
+          </div>
+
+          <!-- Card 4 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap violet">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h4 class="awareness-title">4. Why OTPs Must Remain Secret</h4>
+            <p class="awareness-en">An OTP authorizes the transfer of your hard-earned funds or login takeover. Never share it with anyone, even bank staff.</p>
+            <p class="awareness-ta">OTP என்பது உங்கள் பண பரிவர்த்தனையை இறுதி செய்யும் ரகசிய எண். வங்கி ஊழியர் உட்பட யாரிடமும் பகிரக்கூடாது.</p>
+          </div>
+
+          <!-- Card 5 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap blue">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+            </div>
+            <h4 class="awareness-title">5. Fake Work-From-Home Jobs</h4>
+            <p class="awareness-en">Offers of high daily income for watching videos or rating hotels, requiring an initial "registration fee" or Telegram group deposit.</p>
+            <p class="awareness-ta">வீட்டிலிருந்தே வீடியோ பார்த்து அதிக வருமானம் எனக்கூறி முன்பணப் பதிவு கட்டணம் பறிக்கும் போலி வேலை வாய்ப்புகள்.</p>
+          </div>
+
+          <!-- Card 6 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap gold">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="8" r="7"></circle>
+                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+              </svg>
+            </div>
+            <h4 class="awareness-title">6. Lottery & Prize Giveaways</h4>
+            <p class="awareness-en">Bogus notifications claiming you won a 25 Lakh KBC lottery or car, demanding taxes or processing fees in advance.</p>
+            <p class="awareness-ta">நீங்கள் கலந்து கொள்ளாத போட்டியில் 25 லட்சம் அல்லது கார் வென்றதாக கூறி கட்டணம் வசூலிக்கும் மோசடி.</p>
+          </div>
+
+          <!-- Card 7 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap cyan">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+              </svg>
+            </div>
+            <h4 class="awareness-title">7. Spotting Deceptive URLs</h4>
+            <p class="awareness-en">Check the exact domain name. Scammers use lookalikes such as sbi-secure-login.xyz instead of onlinesbi.sbi.</p>
+            <p class="awareness-ta">இணையதள முகவரியை உற்று கவனியுங்கள். போலி தளங்கள் அசல் வங்கி பெயர் போல தோற்றமளிக்கும் மாறுபட்ட முகவரிகளை கொண்டிருக்கும்.</p>
+          </div>
+
+          <!-- Card 8 -->
+          <div class="awareness-card">
+            <div class="awareness-icon-wrap red">
+              <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2" fill="none">
+                <polygon points="7.86 2 16.14 2 22 7.86 22 16.14 16.14 22 7.86 22 2 16.14 2 7.86 7.86 2"></polygon>
+                <line x1="12" y1="8" x2="12" y2="12"></line>
+                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+              </svg>
+            </div>
+            <h4 class="awareness-title">8. If You Fall For A Scam: Act Fast!</h4>
+            <p class="awareness-en">Immediately call your bank to block cards & freeze UPI. Call 1930 within the golden hour and register on cybercrime.gov.in.</p>
+            <p class="awareness-ta">உடனே உங்கள் வங்கியை தொடர்பு கொண்டு கணக்கை முடக்கவும். முதல் 1 மணி நேரத்திற்குள் 1930 எண்ணை அழைத்து புகார் அளிக்கவும்.</p>
+          </div>
+        </div>
+
+        <!-- ======================================================== -->
+        <!-- INTERACTIVE CYBER DEFENSE QUIZ -->
+        <!-- ======================================================== -->
+        <div class="quiz-container-box">
+          <div class="quiz-header">
+            <div>
+              <span class="quiz-badge">INTERACTIVE SCAM DEFENSE CHALLENGE</span>
+              <h3 class="quiz-title">Test Your Scam-Spotting Reflexes</h3>
+              <p class="quiz-desc">Real scenarios designed to test if you can spot modern phishing tactics.</p>
+            </div>
+            <div class="quiz-score-tracker">
+              <span class="score-label">SESSION SCORE</span>
+              <span class="score-display" id="quiz-score-display">0 / 5</span>
+            </div>
+          </div>
+
+          <!-- Quiz Progress Indicator -->
+          <div class="quiz-progress-bar">
+            <div class="progress-fill" id="quiz-progress-fill" style="width: 20%;"></div>
+          </div>
+
+          <!-- Question Stage Container -->
+          <div id="quiz-stage" class="quiz-stage">
+            <div class="quiz-question-meta">
+              <span class="q-index-pill" id="quiz-q-index">Question 1 of 5</span>
+              <span class="q-category-pill" id="quiz-q-category">Banking Security</span>
+            </div>
+
+            <h4 class="quiz-question-text" id="quiz-q-text">Loading question...</h4>
+
+            <!-- Options List -->
+            <div class="quiz-options-list" id="quiz-options-list">
+              <!-- Options injected dynamically -->
+            </div>
+
+            <!-- Question Feedback Explanation Box -->
+            <div id="quiz-feedback-box" class="quiz-feedback-box hidden" aria-live="polite">
+              <div class="feedback-status-row">
+                <span class="feedback-icon" id="feedback-icon">✓</span>
+                <span class="feedback-title" id="feedback-title">Correct!</span>
+              </div>
+              <p class="feedback-explanation" id="feedback-explanation">Explanation...</p>
+              <button id="btn-next-question" class="btn btn-primary btn-glow">
+                <span>Next Question &rarr;</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Quiz Completion Banner -->
+          <div id="quiz-complete-card" class="quiz-complete-card hidden">
+            <div class="trophy-graphic">
+              <svg viewBox="0 0 24 24" width="56" height="56" stroke="#00f5ff" stroke-width="1.8" fill="none">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                <path d="M4 22h16"></path>
+                <path d="M10 14.66V17c0 .55-.45 1-1 1H7v4h10v-4h-2c-.55 0-1-.45-1-1v-2.34c3.27-.77 5.5-3.66 5.5-7.16V4H5v3.5c0 3.5 2.23 6.39 5.5 7.16z"></path>
+              </svg>
+            </div>
+            <h3 class="complete-title" id="quiz-complete-title">Quiz Completed!</h3>
+            <p class="complete-score" id="quiz-final-score-text">You scored 5 out of 5</p>
+            <p class="complete-verdict" id="quiz-complete-verdict">Outstanding! You have strong cyber threat awareness.</p>
+            <button id="btn-restart-quiz" class="btn btn-primary btn-glow">
+              <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span>Retake Quiz</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 6: SCAM TRENDS DASHBOARD -->
+      <!-- ======================================================== -->
+      <section id="section-trends" class="content-section">
+        <div class="section-title-wrap">
+          <div class="title-flex-between">
+            <div>
+              <h2 class="section-heading">Scam Trends & Telemetry</h2>
+              <p class="section-description">
+                Real scan statistics and threat distributions computed dynamically from client analyses.
+              </p>
+            </div>
+            <!-- Demo Data Switcher -->
+            <div class="trends-data-toggle">
+              <label class="toggle-switch">
+                <input type="checkbox" id="toggle-demo-data">
+                <span class="toggle-slider"></span>
+              </label>
+              <span class="toggle-label" id="toggle-demo-label">Load Demonstration Telemetry</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="trends-data-notice" id="trends-mode-notice">
+          <span class="notice-badge">DATA SOURCE</span>
+          <span id="trends-source-text">Showing actual analyses performed in this browser.</span>
+        </div>
+
+        <!-- Trends Grid -->
+        <div class="trends-analytics-grid">
+          <!-- Chart 1: Risk Severity Distribution -->
+          <div class="trend-card">
+            <h4 class="card-title">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 14 14"></polyline>
+              </svg>
+              <span>Risk Severity Distribution</span>
+            </h4>
+            <div class="chart-content">
+              <!-- Visual Bar Distribution -->
+              <div class="severity-bars-container">
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name text-safe">Low Risk (0-30)</span>
+                    <span class="bar-val" id="trend-pct-low">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-safe" id="trend-bar-low" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name text-warn">Medium Risk (31-60)</span>
+                    <span class="bar-val" id="trend-pct-med">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-warn" id="trend-bar-med" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name text-danger">High Risk (61-100)</span>
+                    <span class="bar-val" id="trend-pct-high">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-danger" id="trend-bar-high" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chart 2: Language Distribution -->
+          <div class="trend-card">
+            <h4 class="card-title">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="2" y1="12" x2="22" y2="12"></line>
+              </svg>
+              <span>Language Distribution</span>
+            </h4>
+            <div class="chart-content">
+              <div class="severity-bars-container" id="lang-trends-container">
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name">English</span>
+                    <span class="bar-val" id="trend-lang-en">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-cyan" id="trend-bar-lang-en" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name">Tamil (தமிழ்)</span>
+                    <span class="bar-val" id="trend-lang-ta">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-violet" id="trend-bar-lang-ta" style="width: 0%;"></div>
+                  </div>
+                </div>
+
+                <div class="severity-bar-item">
+                  <div class="bar-labels">
+                    <span class="bar-name">Tanglish (Tamil in English)</span>
+                    <span class="bar-val" id="trend-lang-tanglish">0% (0)</span>
+                  </div>
+                  <div class="bar-track">
+                    <div class="bar-fill fill-amber" id="trend-bar-lang-tanglish" style="width: 0%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Chart 3: Scam Categories Frequency Breakdown -->
+        <div class="trend-card full-width-card">
+          <h4 class="card-title">
+            <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none">
+              <line x1="18" y1="20" x2="18" y2="10"></line>
+              <line x1="12" y1="20" x2="12" y2="4"></line>
+              <line x1="6" y1="20" x2="6" y2="14"></line>
+            </svg>
+            <span>Top Detected Scam Categories</span>
+          </h4>
+          <div id="scam-types-trend-list" class="scam-types-grid">
+            <!-- Populated dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================== -->
+      <!-- SECTION 7: ANALYSIS HISTORY -->
+      <!-- ======================================================== -->
+      <section id="section-history" class="content-section">
+        <div class="section-title-wrap">
+          <div class="title-flex-between">
+            <div>
+              <h2 class="section-heading">Analysis History & Audit Log</h2>
+              <p class="section-description">
+                Review past analyses stored securely inside your browser's localStorage. Sensitive credentials are never logged.
+              </p>
+            </div>
+            <div class="history-actions-top">
+              <button id="btn-export-history" class="btn btn-secondary">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="7 10 12 15 17 10"></polyline>
+                  <line x1="12" y1="15" x2="12" y2="3"></line>
+                </svg>
+                <span>Export Log (JSON)</span>
+              </button>
+              <button id="btn-clear-history" class="btn btn-danger-ghost">
+                <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" fill="none">
+                  <polyline points="3 6 5 6 21 6"></polyline>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                </svg>
+                <span>Clear All History</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Filter and Search Toolbar -->
+        <div class="history-filter-bar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              id="history-search-input" 
+              class="cyber-search-input" 
+              placeholder="Search history by message snippet, category, or language..."
+            >
+          </div>
+
+          <div class="filter-pills" id="history-filter-pills">
+            <button class="filter-pill active" data-filter="all">All</button>
+            <button class="filter-pill" data-filter="high">High Risk</button>
+            <button class="filter-pill" data-filter="medium">Medium Risk</button>
+            <button class="filter-pill" data-filter="low">Low Risk</button>
+          </div>
+        </div>
+
+        <!-- History Items Table / List -->
+        <div id="history-records-container" class="history-records-wrap">
+          <!-- Dynamically populated or honest empty state -->
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div id="confirm-modal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modal-title" class="modal-title">Confirm Action</h3>
+        <button id="btn-modal-close" class="btn-close-modal" aria-label="Close dialog">&times;</button>
+      </div>
+      <p id="modal-body" class="modal-body-text">Are you sure you want to proceed?</p>
+      <div class="modal-actions">
+        <button id="btn-modal-cancel" class="btn btn-secondary">Cancel</button>
+        <button id="btn-modal-confirm" class="btn btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="script.js"></script>
+</body>
+</html>
